@@ -13,30 +13,28 @@ function longestPalindromeCountOnly(s: string): number {
     return book.size >= 1 ? max + 1 : max;
 };
 
-function longestPalindromeWithChars(s: string): number {    
-    let book = new Map();
-
-    for (let i = 0; i < s.length; ++i) {
+function longestPalindrome(s: string): string {
+    let book = new Set();
+    let a = [];
+    for (let i = 0 ; i < s.length; ++i) {
         let c = s[i];
-        if (!book.has(c)) {
-            book.set(c, 1);
-            continue;
-        }
-        book.set(c, book.get(c) + 1);
-    }
-    
-    if (book.size === 1) { return book.entries().next().value[1]}
-    let max = 0;
-    for (let [c, k] of book.entries()) {
-        if ((k%2) === 0) {
-            max += k;
+        if(book.has(c)) {
+            a.push(c);
             book.delete(c);
-            continue;
+        } else {
+            book.add(c);
         }
-
-        let l = k - 1;
-        max += l;
-        book.set(c, 1);
     }
-    return book.size >= 1 ? max + 1 : max;
-};
+    let n = a.length;
+    let size = 2 * n;
+    if (book.size >= 1) {
+        size++;
+        a.push(book.entries().next().value[0]);
+    }
+
+    for (let i = 0; i < n; ++i) {
+        a[size - i - 1] = a[i];
+    }
+
+    return a.join("");
+}
